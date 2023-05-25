@@ -23,6 +23,8 @@ import { UserLoginComponent } from './user/user-login/user-login.component';
 import { AlertyfyService } from './services/alertyfy.service';
 import { AuthService } from './services/auth.service';
 import { PropertyDetailResolverService } from './property/property-detail/property-detail-resolver.service';
+import { FiltersPipe } from './pipes/filter.pipe';
+import { SortPipe } from './pipes/sort.pipe';
 
 const appRouts: Routes = [
   { path: '', component: PropertyListComponent },
@@ -48,6 +50,8 @@ const appRouts: Routes = [
     PropertyDetailComponent,
     UserRegisterComponent,
     UserLoginComponent,
+    FiltersPipe,
+    SortPipe,
   ],
   imports: [
     BrowserModule,

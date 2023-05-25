@@ -30,6 +30,7 @@ export class AddPropertyComponent implements OnInit {
   propertyType: Array<string> = ['House', 'Apartment', 'Duplex'];
   furnishType: Array<string> = ['Fully', 'Semi', 'Unfurnished'];
   mainEntrance: Array<string> = ['East', 'West', 'North', 'South'];
+  cityList: any[];
 
   propertyView: IProperrtyBase = {
     Id: null,
@@ -40,7 +41,7 @@ export class AddPropertyComponent implements OnInit {
     FType: null,
     BHK: null,
     BuiltArea: null,
-    City: null,
+    City: '',
     RTM: null,
   };
 
@@ -53,6 +54,10 @@ export class AddPropertyComponent implements OnInit {
 
   ngOnInit() {
     this.CreateAddPropertyForm();
+    this.housingService.getAllCitys().subscribe((data) => {
+      this.cityList = data;
+      console.log(data);
+    });
   }
 
   CreateAddPropertyForm() {
@@ -63,7 +68,7 @@ export class AddPropertyComponent implements OnInit {
         FType: [null],
         Name: [null, Validators.required],
         BHK: [null],
-        City: [null],
+        City: [null, Validators.required],
       }),
       PriceInfo: this.fb.group({
         Price: [null, Validators.required],
@@ -193,14 +198,11 @@ export class AddPropertyComponent implements OnInit {
       this.alertyfy.success(
         'You have successfully added your Property details.!'
       );
-      if(this.SellRent.value == 2){
+      if (this.SellRent.value == 2) {
         this.router.navigate(['/rent-property']);
-      }
-      else{
+      } else {
         this.router.navigate(['/']);
       }
-
-
     } else {
       this.alertyfy.warning('Please priview your input details.!');
     }

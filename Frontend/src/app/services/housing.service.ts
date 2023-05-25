@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 export class HousingService {
   constructor(private http: HttpClient) {}
   getProperty(id: number) {
@@ -18,6 +19,10 @@ export class HousingService {
         return propertiesArray.find((p) => p.Id === id);
       })
     );
+  }
+
+  getAllCitys():Observable<string[]>{
+    return this.http.get<string[]>('http://localhost:29672/api/City');
   }
 
   getAllProperties(SellRent?: number): Observable<Property[]> {

@@ -12,6 +12,10 @@ import { JsonPipe } from '@angular/common';
 export class PropertyListComponent implements OnInit {
   SellRent = 1;
   properties: IProperrtyBase[];
+  City = '';
+  SearchCity = '';
+  SortParam = '';
+  SortDirection = 'asc';
 
   constructor(
     private housingservice: HousingService,
@@ -32,5 +36,20 @@ export class PropertyListComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  onCityFilter() {
+    this.SearchCity = this.City;
+  }
+  onCityClearFilter() {
+    this.City = '';
+    this.SearchCity = '';
+  }
+  onSortDirection() {
+    if (this.SortDirection === 'desc') {
+      this.SortDirection = 'asc';
+    } else {
+      this.SortDirection = 'desc';
+    }
   }
 }

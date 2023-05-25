@@ -55,10 +55,6 @@
                   <label for="name">Bulding/Society/Project</label>
                   <input type="text" class="form-control" minlength="5" ngModel formControlName="Name"
                     [(ngModel)]="propertyView.Name">
-                  <!-- <span *ngIf="!propName.valid && propName.touched" class="error-block">
-                    <span *ngIf="propName.errors['required']">Please provide name</span>
-                    <span *ngIf="propName.errors['minlength']">Name must be atleast 5 char long</span>
-                  </span> -->
                   <div class="error-block" *ngIf="BuildingName.invalid && (nextClicked || BuildingName.touched)">
                     Please Provide Building/Society Name.
                   </div>
@@ -66,8 +62,15 @@
 
                 <div class="form-group col-12">
                   <label for="City">City</label>
-                  <input type="text" class="form-control" formControlName="City" [(ngModel)]="propertyView.City">
+                  <select class="form-control" formControlName="City" [(ngModel)]="propertyView.City">
+                    <option value="">--Select City--</option>
+                    <option *ngFor="let city of cityList" value="{{city.id}}">{{city.name}}</option>
+                  </select>
+                  <div class="error-block" *ngIf="City.invalid && (nextClicked || City.touched)">
+                    Please Select City.
+                  </div>
                 </div>
+
                 <button type="button" (click)="selectTab(1,BasicInfo.valid)"
                   class="btn btn-primary w-100 my-2">Next</button>
               </tab>
