@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using WebAPI.Data.Entity;
 using WebAPI.Dtos;
 using WebAPI.Interfaces;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CityController : ControllerBase
+    [Authorize]
+    public class CityController : BaseController
     {
         private readonly IUnitofWork _uow;
         private readonly IMapper _mapper;
@@ -24,6 +22,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCities()
         {
+            //throw new UnauthorizedAccessException();
             var cities = await _uow.CityRepository.GetCitiesAsync();
             var citiesDto = _mapper.Map<IEnumerable<CityDto>>(cities);
             return Ok(citiesDto);
@@ -49,7 +48,14 @@ namespace WebAPI.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateCity(int id, CityDto cityDto)
         {
+            if (id != cityDto.Id)
+                return BadRequest("Update not allowed.");
+
             var updateCity = await _uow.CityRepository.FindCity(id);
+
+            if (updateCity == null)
+                return BadRequest("Update not allowed.");
+
             updateCity.UpdatedOn = DateTime.Now;
             updateCity.UpdatedBy = 1;
             _mapper.Map(cityDto, updateCity);
@@ -58,7 +64,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPatch("update/{id}")]
-        public async Task<IActionResult>UpdateCityPatch(int id, JsonPatchDocument<CityEntity> cityEntityPatch)
+        public async Task<IActionResult> UpdateCityPatch(int id, JsonPatchDocument<CityEntity> cityEntityPatch)
         {
             var updateCityPatch = await _uow.CityRepository.FindCity(id);
             updateCityPatch.UpdatedBy = 1;

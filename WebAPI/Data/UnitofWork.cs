@@ -1,4 +1,5 @@
-﻿using WebAPI.Data.Repository;
+﻿using WebAPI.Data.Repositories;
+using WebAPI.Data.Repository;
 using WebAPI.Interfaces;
 
 namespace WebAPI.Data
@@ -10,12 +11,12 @@ namespace WebAPI.Data
         {
             _context = dataContext;
         }
-        public ICityRepository CityRepository =>
-            new CityRepository(_context);
+        public ICityRepository CityRepository => new CityRepository(_context);
+        public IUserRepository UserRepository => new UserRepository(_context);
 
         public async Task<bool> SaveAsync()
         {
-           return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
